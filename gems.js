@@ -96,3 +96,42 @@
 
   window.AstraGems = { showField: () => {} };
 })();
+/**
+ * ASTRA VAULT — Gem data config (GitHub Fixed)
+ */
+const gems = [
+  {
+    id: 1,
+    name: "Ruby",
+    image: "images/ruby.png", // Path fixed for GitHub
+    description: "A deep red precious gemstone, historically associated with nobility, wealth, and passion.",
+    rarity: "Rare",
+    price: "$2,500/ct"
+  },
+  {
+    id: 2,
+    name: "Pearl",
+    image: "images/pearl.png", // Path fixed for GitHub
+    description: "An organic gemstone formed within the shells of living mollusks, symbolizing purity and wisdom.",
+    rarity: "Uncommon",
+    price: "$800/ct"
+  },
+  {
+    id: 3,
+    name: "Coral",
+    image: "images/coral.png", // Path fixed for GitHub
+    description: "A vibrant, organic gemstone formed by marine polyps, valued for its warm reddish-pink hues.",
+    rarity: "Uncommon",
+    price: "$400/ct"
+  },
+  {
+    id: 4,
+    name: "Diamond",
+    image: "images/diamond.png", // Path fixed for GitHub
+    description: "The hardest known natural material, famous for its brilliant sparkle, clarity, and timeless elegance.",
+    rarity: "Extremely Rare",
+    price: "$8,500/ct"
+  }
+];
+
+export default gems;
