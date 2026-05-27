@@ -918,3 +918,20 @@ window.history.pushState({}, '', urlState);
   console.log("%c%s", "color: #ffffff; background: #08080a; padding: 6px 12px; border: 1px solid rgba(201,169,98,0.2); font-family: monospace;", "ASTRA VAULT SECURE CORE • ARCHITECTURE v2.04");
   console.log("%cUnauthorized source decompilation is strictly monitored.", "color: rgba(255,255,255,0.4); font-size: 10px; font-style: italic;");
 })();
+function playPremiumClick() {
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.05);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.05);
+    } catch (e) {
+        console.log("Audio context blocked by browser until first interaction.");
+    }
+}
