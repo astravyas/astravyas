@@ -1,87 +1,65 @@
 /**
- * ASTRA VAULT — Gem photos: Ultra-clean background cutout (Black bars & Checkerboard Destroyer)
+ * ASTRA VAULT — Gem photos: background clean + 3D spin ready (FIXED FOR DIAMOND & PEARL)
  */
 (function initGemField() {
-  
-  function cutOutGem(img, isDiamond = false) {
+  function isBackgroundPixel(r, g, b, isWhiteGem = false) {
+    if (isWhiteGem) {
+      // 245 bohot strict tha, isko 210 kiya hai taaki off-white corners saaf ho jayein
+      return r > 210 && g > 210 && b > 210;
+    }
+    
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    const sat = max - min;
+    const lum = (r + g + b) / 3;
+    if (sat < 50 && lum > 175) return true;
+    if (r > 248 && g > 248 && b > 248) return true;
+    if (sat < 32 && lum < 32) return true;
+    return false;
+  }
+  function cutOutGem(img, isWhiteGem = false) {
     const maxSide = 640;
     const scale = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight, 1));
     const w = Math.max(1, Math.floor(img.naturalWidth * scale));
     const h = Math.max(1, Math.floor(img.naturalHeight * scale));
-    
     const c = document.createElement("canvas");
     c.width = w;
     c.height = h;
     const ctx = c.getContext("2d", { willReadFrequently: true });
     ctx.drawImage(img, 0, 0, w, h);
-    
     const data = ctx.getImageData(0, 0, w, h);
     const px = data.data;
-    
-    const cx = w / 2;
-    const cy = h / 2;
+    const visited = new Uint8Array(w * h);
+    const queue = [];
 
-    // Poore canvas ke ek-ek pixel ko line-by-line scan karo
-    for (let y = 0; y < h; y++) {
-      for (let x = 0; x < w; x++) {
-        const i = (y * w + x) * 4;
-        const r = px[i];
-        const g = px[i + 1];
-        const b = px[i + 2];
-        
-        const max = Math.max(r, g, b);
-        const min = Math.min(r, g, b);
-        const sat = max - min;
-        const lum = (r + g + b) / 3;
-        
-        // Center se pixel ki doori (Elliptical Boundary)
-        const dx = (x - cx) / cx;
-        const dy = (y - cy) / cy;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+    const trySeed = (x, y) => {
+      const idx = y * w + x;
+      if (visited[idx]) return;
+      const i = idx * 4;
+      if (!isBackgroundPixel(px[i], px[i + 1], px[i + 2], isWhiteGem)) return;
+      visited[idx] = 1;
+      queue.push(idx);
+    };
 
-        // 1. Sabse pehle bahar ke gande Black Bars ko udaao (Everywhere)
-        if (max < 65) {
-          px[i + 3] = 0;
-          continue;
-        }
-
-        // 2. Agar pixel Gem ke core area se bahar hai (Outer 50% zone)
-        if (dist > 0.48) {
-          // Pure White Card ya Fake Checkerboard ke Gray/White squares ko saaf karo
-          if (min > 185 || (sat < 25 && lum > 130)) {
-            px[i + 3] = 0;
-            continue;
-          }
-        } else {
-          // 3. Inner Gem Area: Yahan sirf tabhi touch karenge jab pakka background ho
-          // Diamond ke facets ko bachane ke liye strict rules
-          if (!isDiamond && min > 230) {
-            px[i + 3] = 0; // Ruby aur Coral ke aaspas ka background saaf
-          } else if (isDiamond && min > 248 && sat < 10) {
-            px[i + 3] = 0; // Diamond ke andar ke dhabbe clean karne ke liye ultra-safe white filter
-          }
-        }
-      }
+    for (let x = 0; x < w; x += 1) {
+      trySeed(x, 0);
+      trySeed(x, h - 1);
+    }
+    for (let y = 0; y < h; y += 1) {
+      trySeed(0, y);
+      trySeed(w - 1, y);
     }
 
-    // Kinaron ko smooth (anti-alias) karne ke liye halka sa alpha blend
-    for (let y = 1; y < h - 1; y++) {
-      for (let x = 1; x < w - 1; x++) {
-        const i = (y * w + x) * 4;
-        if (px[i + 3] > 0) {
-          const n1 = px[((y - 1) * w + x) * 4 + 3] === 0;
-          const n2 = px[((y + 1) * w + x) * 4 + 3] === 0;
-          const n3 = px[(y * w + (x - 1)) * 4 + 3] === 0;
-          const n4 = px[(y * w + (x + 1)) * 4 + 3] === 0;
-          
-          if (n1 || n2 || n3 || n4) {
-            const max = Math.max(px[i], px[i + 1], px[i + 2]);
-            if (max > 150 && (px[i] - px[i + 2]) < 40) {
-              px[i + 3] = Math.floor(px[i + 3] * 0.3); // Edge smoothing pass
-            }
-          }
-        }
-      }
+    while (queue.length) {
+      const idx = queue.pop();
+      const i = idx * 4;
+      px[i + 3] = 0;
+      const x = idx % w;
+      const y = (idx / w) | 0;
+      if (x > 0) trySeed(x - 1, y);
+      if (x < w - 1) trySeed(x + 1, y);
+      if (y > 0) trySeed(x, y - 1);
+      if (y < h - 1) trySeed(x, y + 1);
     }
 
     ctx.putImageData(data, 0, 0);
@@ -101,15 +79,17 @@
       try {
         const srcLower = img.src.toLowerCase();
         
-        // Pearl pehle se hi perfectly transparent asset hai, ise chhedne ki zarurat nahi hai
-        if (srcLower.includes("pearl") || img.hasAttribute("data-skip-cutout")) {
+        // Agar image transparent PNG hai ya direct load karni hai toh skip attribute use karein
+        if (img.hasAttribute("data-skip-cutout")) {
           img.style.mixBlendMode = "normal";
-          finish(true);
+          finish(false);
           return;
         }
 
-        const isDiamond = srcLower.includes("diamond") || srcLower.includes("heera");
-        img.src = cutOutGem(img, isDiamond);
+        // Auto detect Diamond and Pearl from filename or attribute
+        const isWhiteGem = srcLower.includes("diamond") || srcLower.includes("pearl") || img.hasAttribute("data-white-gem");
+
+        img.src = cutOutGem(img, isWhiteGem);
         finish(true);
       } catch (_) {
         finish(false);
@@ -132,43 +112,3 @@
 
   window.AstraGems = { showField: () => {} };
 })();
-
-/**
- * ASTRA VAULT — Gem data config
- */
-const gems = [
-  {
-    id: 1,
-    name: "Ruby",
-    image: "images/ruby.png",
-    description: "A deep red precious gemstone, historically associated with nobility, wealth, and passion.",
-    rarity: "Rare",
-    price: "$2,500/ct"
-  },
-  {
-    id: 2,
-    name: "Pearl",
-    image: "images/pearl.png",
-    description: "An organic gemstone formed within the shells of living mollusks, symbolizing purity and wisdom.",
-    rarity: "Uncommon",
-    price: "$800/ct"
-  },
-  {
-    id: 3,
-    name: "Coral",
-    image: "images/coral.png",
-    description: "A vibrant, organic gemstone formed by marine polyps, valued for its warm reddish-pink hues.",
-    rarity: "Uncommon",
-    price: "$400/ct"
-  },
-  {
-    id: 4,
-    name: "Diamond",
-    image: "images/diamond.png",
-    description: "The hardest known natural material, famous for its brilliant sparkle, clarity, and timeless elegance.",
-    rarity: "Extremely Rare",
-    price: "$8,500/ct"
-  }
-];
-
-export default gems;
