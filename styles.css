@@ -2784,3 +2784,13 @@ body.portal-active { overflow: hidden; touch-action: none; }
 
 @keyframes smoothPortalReveal { to { transform: translateY(0); opacity: 1; } }
 @keyframes cosmicPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(201, 169, 98, 0.2); } 70% { box-shadow: 0 0 0 8px rgba(201, 169, 98, 0); } }
+/* Custom Corporate Theme Selection Mask */
+::selection {
+  background: rgba(201, 169, 98, 0.25); /* Gold tinted translucent highlight mask */
+  color: #ffffff;
+}
+
+::-moz-selection {
+  background: rgba(201, 169, 98, 0.25);
+  color: #ffffff;
+}
