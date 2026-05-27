@@ -793,6 +793,9 @@
 
     localStorage.setItem("vault-user-lang", lang);
   }
+// Smooth URL Aesthetics Update WITHOUT Refreshing Page
+const urlState = lang === 'hi' ? '?interface=vedic' : '?interface=core';
+window.history.pushState({}, '', urlState);
 
   function getCosmicGreeting() {
     const hours = new Date().getHours();
