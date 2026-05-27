@@ -765,3 +765,143 @@
     initCursor();
   }, 3000);
 })();
+// ==========================================================================
+// ASTRA VAULT — MILLION DOLLAR MASTER ENGINE & PROTOCOL SHIELD
+// ==========================================================================
+(function astraMasterEngine() {
+  const localizationDictionary = {
+    en: {
+      motto: "Ancient intelligence. Futuristic clarity.",
+      heroTitle: "ASTRA VAULT",
+      heroSub: "Accurate Vedic Calculations & Logic"
+    },
+    hi: {
+      motto: "प्राचीन ज्ञान। आधुनिक और स्पष्ट तकनीक।",
+      heroTitle: "अस्त्र वॉल्ट",
+      heroSub: "सटीक वैदिक गणना और वैज्ञानिक दृष्टिकोण"
+    }
+  };
+
+  function executeLanguageShift(lang) {
+    const mottoText = document.querySelector(".footer-brand p");
+    const heroHeading = document.querySelector(".hero h1"); 
+    const heroSubText = document.querySelector(".hero p");
+
+    if (mottoText) mottoText.textContent = localizationDictionary[lang].motto;
+    if (heroHeading) heroHeading.textContent = localizationDictionary[lang].heroTitle;
+    if (heroSubText) heroSubText.textContent = localizationDictionary[lang].heroSub;
+
+    localStorage.setItem("vault-user-lang", lang);
+  }
+
+  function getCosmicGreeting() {
+    const hours = new Date().getHours();
+    if (hours < 12) return "GOOD MORNING • शुभ प्रभात";
+    if (hours < 17) return "GOOD AFTERNOON • शुभ दोपहर";
+    return "GOOD EVENING • शुभ संध्या";
+  }
+
+  // Runtime Core Engine Synchronization Hook
+  document.addEventListener("DOMContentLoaded", () => {
+    const portalOverlay = document.querySelector("#language-portal");
+    const subText = document.querySelector(".portal-sub-text");
+    const cachedLang = localStorage.getItem("vault-user-lang");
+
+    if (subText) {
+      subText.innerHTML = `<span style='color:var(--gold-bright); display:block; font-size:10px; letter-spacing:3px; margin-bottom:8px;'>${getCosmicGreeting()}</span>अपनी पसंदीदा bhasha चुनें`;
+    }
+
+    if (cachedLang && portalOverlay) {
+      portalOverlay.style.transition = "none";
+      portalOverlay.classList.add("is-hidden");
+      executeLanguageShift(cachedLang);
+      if (typeof awaken === "function") awaken(false);
+      return;
+    }
+
+    if (portalOverlay) {
+      document.body.classList.add("portal-active");
+    }
+  });
+
+  // Handle Event Triggers (Click, Skip, and Multi-Tab Multi-Threading Sync)
+  const portalOverlay = document.querySelector("#language-portal");
+  if (portalOverlay) {
+    portalOverlay.querySelectorAll("[data-select-lang]").forEach(button => {
+      button.addEventListener("click", (e) => {
+        const targetBtn = e.target.closest("[data-select-lang]");
+        const chosenLang = targetBtn.getAttribute("data-select-lang");
+        executeLanguageShift(chosenLang);
+        document.body.classList.remove("portal-active");
+        portalOverlay.classList.add("is-hidden");
+        if (navigator.vibrate) navigator.vibrate(12); // Premium mobile haptic touch click feel
+        if (typeof awaken === "function") awaken(false);
+      });
+    });
+
+    const bypassBtn = document.querySelector("#bypass-portal-btn");
+    if (bypassBtn) {
+      bypassBtn.addEventListener("click", () => {
+        executeLanguageShift("en");
+        portalOverlay.classList.add("is-hidden");
+        document.body.classList.remove("portal-active");
+        if (typeof awaken === "function") awaken(false);
+      });
+    }
+  }
+
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'vault-user-lang' && e.newValue) {
+      executeLanguageShift(e.newValue);
+      if (portalOverlay) portalOverlay.classList.add("is-hidden");
+    }
+  });
+
+  window.addEventListener("offline", () => {
+    const motto = document.querySelector(".footer-brand p");
+    if (motto) motto.textContent = "Offline Vault Active • Local Mode Running.";
+  });
+
+  // Emergency Self-Healing UI Trigger
+  window.addEventListener("error", () => {
+    if (portalOverlay && !portalOverlay.classList.contains("is-hidden")) {
+      portalOverlay.classList.add("is-hidden");
+      document.body.classList.remove("portal-active");
+    }
+  });
+
+  // KEYBOARD ACCESSIBILITY KEY: 'L' dabate hi language box smooth re-appear hoga
+  window.addEventListener("keydown", (e) => {
+    if (e.key.toLowerCase() === "l" && portalOverlay) {
+      portalOverlay.classList.toggle("is-hidden");
+    }
+  });
+
+  // ==========================================================================
+  // EXTREME IRONCLAD SECURITY PROTOCOL (HACKER INTERCEPT BARRIER)
+  // ==========================================================================
+  const validDomains = ['astravyas.in', 'localhost', '127.0.0.1'];
+  if (!validDomains.some(d => window.location.hostname.includes(d))) {
+    document.body.innerHTML = "";
+    window.location.replace('https://astravyas.in');
+    return;
+  }
+
+  // Infinite Debugger Trap (DevTools khulne par browser tab lag/freeze kar dega)
+  setInterval(function() {
+    const start = performance.now();
+    debugger; 
+    if (performance.now() - start > 100) {
+      document.body.innerHTML = "<div style='color:#c9a962; text-align:center; padding-top:20%; font-family:monospace; background:#000; position:fixed; inset:0; z-index:9999999;'>CRITICAL EXPLOIT ATTEMPT DETECTED: CONNECTION TERMINATED.</div>";
+      for (let i = 0; i < 20000; i++) console.log("Memory Overload Counter Triggered...");
+    }
+  }, 400);
+
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('keydown', e => {
+    if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83))) {
+      e.preventDefault();
+      return false;
+    }
+  });
+})();
