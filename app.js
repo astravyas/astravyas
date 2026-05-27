@@ -2,7 +2,7 @@
  * ASTRA VAULT — Core experience engine
  * Lenis smooth scroll · GSAP cinematic motion · Canvas void field
  */
-(function initAstraVault() {
+(function initAstraVault() 
   "use strict";
 
   /* DOM refs */
@@ -907,7 +907,42 @@ window.history.pushState({}, '', urlState);
       return false;
     }
   });
-})();
+/* --- ASTRA VAULT: LANGUAGE & AUDIO PROTOCOL --- */
+  
+  function playPremiumClick() {
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine'; 
+      osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.05);
+      osc.connect(gain); 
+      gain.connect(audioCtx.destination);
+      osc.start(); 
+      osc.stop(audioCtx.currentTime + 0.05);
+    } catch(e) {}
+  }
+
+  const portal = document.querySelector("#language-portal");
+  
+  document.querySelectorAll("[data-select-lang]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      playPremiumClick();
+      localStorage.setItem("vault-user-lang", btn.dataset.selectLang);
+      portal.classList.add("is-hidden");
+      if(window.awaken) window.awaken(false);
+    });
+  });
+
+  document.addEventListener("mouseleave", (e) => {
+    if (e.clientY < 0) portal.classList.remove("is-hidden");
+  });
+
+  if(localStorage.getItem("vault-user-lang")) {
+     portal.classList.add("is-hidden");
+  }})();
 // Elite Platform Developer Signature Hook
 (function consoleSignature() {
   console.clear();
@@ -918,20 +953,3 @@ window.history.pushState({}, '', urlState);
   console.log("%c%s", "color: #ffffff; background: #08080a; padding: 6px 12px; border: 1px solid rgba(201,169,98,0.2); font-family: monospace;", "ASTRA VAULT SECURE CORE • ARCHITECTURE v2.04");
   console.log("%cUnauthorized source decompilation is strictly monitored.", "color: rgba(255,255,255,0.4); font-size: 10px; font-style: italic;");
 })();
-function playPremiumClick() {
-    try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.05);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.05);
-    } catch (e) {
-        console.log("Audio context blocked by browser until first interaction.");
-    }
-}
