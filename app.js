@@ -905,3 +905,13 @@
     }
   });
 })();
+// Elite Platform Developer Signature Hook
+(function consoleSignature() {
+  console.clear();
+  console.log("%c  __      __  _     _  _   ", "color: #c9a962; font-weight: bold; font-size: 14px;");
+  console.log("%c /  \\    /  \\| |   | || |  ", "color: #c9a962; font-weight: bold; font-size: 14px;");
+  console.log("%c \\   \\  /   /| |___| || |__", "color: #c9a962; font-weight: bold; font-size: 14px;");
+  console.log("%c  \\___\\/___/ |_____|_||____|", "color: #c9a962; font-weight: bold; font-size: 14px;");
+  console.log("%c%s", "color: #ffffff; background: #08080a; padding: 6px 12px; border: 1px solid rgba(201,169,98,0.2); font-family: monospace;", "ASTRA VAULT SECURE CORE • ARCHITECTURE v2.04");
+  console.log("%cUnauthorized source decompilation is strictly monitored.", "color: rgba(255,255,255,0.4); font-size: 10px; font-style: italic;");
+})();
