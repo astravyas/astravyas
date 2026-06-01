@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://astravyas.in/sitemap.xml
