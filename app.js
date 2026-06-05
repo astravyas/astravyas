@@ -98,17 +98,11 @@
         loaderParticles.appendChild(s);
       }
     }
-
-    const finish = () => {
-      loader?.classList.add("is-done");
-      document.body.classList.add("is-loaded");
-
-      /* Only skip gate if ?skip=1 in URL — always show obsidian on normal open */
-      const params = new URLSearchParams(window.location.search);
-      if (params.get("skip") === "1") {
-        awaken(true);
-      }
-    };
+      const finish = () => {
+  loader?.classList.add("is-done");
+  document.body.classList.add("is-loaded");
+  awaken(true);
+};
 
     if (prefersReduced) {
       setTimeout(finish, 300);
