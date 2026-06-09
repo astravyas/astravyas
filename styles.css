@@ -350,7 +350,7 @@ img {
    Vault shell
    -------------------------------------------------------------------------- */
 
-.vault {
+.vyas {
   position: relative;
   z-index: 4;
   --tilt-x: 0deg;
@@ -394,13 +394,13 @@ img {
   background: linear-gradient(180deg, transparent 0 50%, rgba(0, 0, 0, 0.75) 85%);
 }
 
-.vault[data-state="void"] .entry {
+.vyas[data-state="void"] .entry {
   visibility: visible;
   opacity: 1;
   pointer-events: auto;
 }
 
-.vault[data-state="awakened"] .entry {
+.vyas[data-state="awakened"] .entry {
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
@@ -457,15 +457,15 @@ img {
 }
 
 /* Content visible once vault is awakened — keep spinners/chakras animating */
-.vault[data-state="awakened"] .reveal-item:not(.horoscope-engine):not(.hero-cosmic-stack):not(.gem-card),
-.vault[data-state="awakened"] .section-title h2 {
+.vyas[data-state="awakened"] .reveal-item:not(.horoscope-engine):not(.hero-cosmic-stack):not(.gem-card),
+.vyas[data-state="awakened"] .section-title h2 {
   opacity: 1;
   transform: none;
 }
 
-.vault[data-state="awakened"] .horoscope-engine,
-.vault[data-state="awakened"] .hero-cosmic-stack,
-.vault[data-state="awakened"] .gem-card {
+.vyas[data-state="awakened"] .horoscope-engine,
+.vyas[data-state="awakened"] .hero-cosmic-stack,
+.vyas[data-state="awakened"] .gem-card {
   opacity: 1;
 }
 
@@ -535,13 +535,13 @@ img {
   animation: obsidianBurstCore 2.8s ease-in-out infinite;
 }
 
-.vault[data-phase="pressure"] .obsidian-burst,
-.vault[data-phase="fracture"] .obsidian-burst,
-.vault[data-phase="awakened"] .obsidian-burst {
+.vyas[data-phase="pressure"] .obsidian-burst,
+.vyas[data-phase="fracture"] .obsidian-burst,
+.vyas[data-phase="awakened"] .obsidian-burst {
   animation: obsidianExplode 1.1s var(--ease-sacred) forwards;
 }
 
-.vault[data-phase="pressure"] .obsidian-burst-b {
+.vyas[data-phase="pressure"] .obsidian-burst-b {
   animation: obsidianExplodeCore 1.4s var(--ease-sacred) forwards;
 }
 
@@ -686,20 +686,20 @@ img {
   pointer-events: none;
 }
 
-.vault[data-phase="awakened"] .awakening-flash {
+.vyas[data-phase="awakened"] .awakening-flash {
   animation: awakenedFlash 2.2s ease both;
 }
 
-.vault[data-phase="pressure"] .obsidian-core {
+.vyas[data-phase="pressure"] .obsidian-core {
   filter: brightness(1.5) contrast(1.08);
 }
 
-.vault[data-phase="freeze"] .obsidian-core {
+.vyas[data-phase="freeze"] .obsidian-core {
   filter: brightness(1.12) contrast(1.05) saturate(0.8);
 }
 
-.vault[data-phase="opening"] .obsidian-core,
-.vault[data-phase="fracture"] .obsidian-core {
+.vyas[data-phase="opening"] .obsidian-core,
+.vyas[data-phase="fracture"] .obsidian-core {
   animation: none;
   opacity: 0;
   transition: opacity 0.45s ease;
@@ -717,7 +717,7 @@ img {
   transition: opacity 1s 0.4s ease, visibility 1s, transform 1s 0.4s var(--ease-sacred);
 }
 
-.vault[data-state="awakened"] .app-shell {
+.vyas[data-state="awakened"] .app-shell {
   visibility: visible;
   opacity: 1;
   transform: none;
