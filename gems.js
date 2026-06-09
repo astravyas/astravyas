@@ -1,6 +1,6 @@
 /**
  * ASTRA VYAS — Gem photos: background clean + 3D spin ready
- * FIXED: Global access granted for app.js
+ * FIXED: Wrapper removed for global accessibility
  */
 
 function initGemField() {
@@ -8,6 +8,7 @@ function initGemField() {
     if (isWhiteGem) {
       return r > 210 && g > 210 && b > 210;
     }
+  
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
     const sat = max - min;
