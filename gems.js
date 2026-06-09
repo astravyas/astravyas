@@ -1,12 +1,13 @@
 /**
- * ASTRA VYAS — Gem photos: background clean + 3D spin ready (FIXED FOR DIAMOND & PEARL)
+ * ASTRA VYAS — Gem photos: background clean + 3D spin ready
+ * FIXED: Global access granted for app.js
  */
-unction initGemField() {
+
+function initGemField() {
   function isBackgroundPixel(r, g, b, isWhiteGem = false) {
     if (isWhiteGem) {
       return r > 210 && g > 210 && b > 210;
     }
-  
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
     const sat = max - min;
@@ -16,16 +17,19 @@ unction initGemField() {
     if (sat < 32 && lum < 32) return true;
     return false;
   }
+
   function cutOutGem(img, isWhiteGem = false) {
     const maxSide = 640;
     const scale = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight, 1));
     const w = Math.max(1, Math.floor(img.naturalWidth * scale));
     const h = Math.max(1, Math.floor(img.naturalHeight * scale));
+    
     const c = document.createElement("canvas");
     c.width = w;
     c.height = h;
     const ctx = c.getContext("2d", { willReadFrequently: true });
     ctx.drawImage(img, 0, 0, w, h);
+    
     const data = ctx.getImageData(0, 0, w, h);
     const px = data.data;
     const visited = new Uint8Array(w * h);
@@ -40,14 +44,8 @@ unction initGemField() {
       queue.push(idx);
     };
 
-    for (let x = 0; x < w; x += 1) {
-      trySeed(x, 0);
-      trySeed(x, h - 1);
-    }
-    for (let y = 0; y < h; y += 1) {
-      trySeed(0, y);
-      trySeed(w - 1, y);
-    }
+    for (let x = 0; x < w; x += 1) { trySeed(x, 0); trySeed(x, h - 1); }
+    for (let y = 0; y < h; y += 1) { trySeed(0, y); trySeed(w - 1, y); }
 
     while (queue.length) {
       const idx = queue.pop();
@@ -69,25 +67,17 @@ unction initGemField() {
     const finish = (useCutout) => {
       const stage = img.closest(".gem-3d-stage");
       stage?.classList.add("is-ready");
-      if (useCutout) {
-        img.style.mixBlendMode = "normal";
-      }
+      if (useCutout) img.style.mixBlendMode = "normal";
     };
 
     const process = () => {
       try {
-        const srcLower = img.src.toLowerCase();
-        
-        // Agar image transparent PNG hai ya direct load karni hai toh skip attribute use karein
         if (img.hasAttribute("data-skip-cutout")) {
-          img.style.mixBlendMode = "normal";
           finish(false);
           return;
         }
-
-        // Auto detect Diamond and Pearl from filename or attribute
+        const srcLower = img.src.toLowerCase();
         const isWhiteGem = srcLower.includes("diamond") || srcLower.includes("pearl") || img.hasAttribute("data-white-gem");
-
         img.src = cutOutGem(img, isWhiteGem);
         finish(true);
       } catch (_) {
@@ -97,17 +87,7 @@ unction initGemField() {
 
     if (img.complete && img.naturalWidth > 0) process();
     else img.addEventListener("load", process, { once: true });
-
-    img.addEventListener(
-      "error",
-      () => {
-        const alt = img.getAttribute("data-fallback");
-        if (alt && !img.src.endsWith(alt)) img.src = alt;
-        else img.classList.add("is-broken");
-      },
-      { once: true }
-    );
   });
 
   window.AstraGems = { showField: () => {} };
-})();
+}
