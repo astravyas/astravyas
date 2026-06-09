@@ -1,5 +1,4 @@
-/* gems.js - Global Function (No Wrapper) */
-
+/* gems.js */
 function initGemField() {
   function isBackgroundPixel(r, g, b, isWhiteGem = false) {
     if (isWhiteGem) return r > 210 && g > 210 && b > 210;
@@ -60,6 +59,5 @@ function initGemField() {
     if (img.complete && img.naturalWidth > 0) process();
     else img.addEventListener("load", process, { once: true });
   });
-  window.AstraGems = { showField: () => {} };
-  console.log("initGemField initialized successfully");
+  console.log("Gems.js Loaded Successfully");
 }
