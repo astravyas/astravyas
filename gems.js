@@ -1,13 +1,12 @@
 /**
- * ASTRA VAULT — Gem photos: background clean + 3D spin ready (FIXED FOR DIAMOND & PEARL)
+ * ASTRA VYAS — Gem photos: background clean + 3D spin ready (FIXED FOR DIAMOND & PEARL)
  */
-(function initGemField() {
+unction initGemField() {
   function isBackgroundPixel(r, g, b, isWhiteGem = false) {
     if (isWhiteGem) {
-      // 245 bohot strict tha, isko 210 kiya hai taaki off-white corners saaf ho jayein
       return r > 210 && g > 210 && b > 210;
     }
-    
+  
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
     const sat = max - min;
