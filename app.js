@@ -8,9 +8,7 @@
   /* DOM refs */
   const canvas = document.querySelector("#void-field");
   const ctx = canvas?.getContext("2d", { alpha: false, desynchronized: true });
-  const vault =
-  document.querySelector(".vyas") ||
-  document.querySelector(".vault");
+  const vault = document.querySelector(".vyas");
   const trigger = document.querySelector(".obsidian-trigger");
   const cursor = document.querySelector(".energy-cursor");
   const cursorTrail = document.querySelector(".cursor-trail");
