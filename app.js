@@ -569,30 +569,24 @@
   }
 
   /* Stat counters */
-  function initCounters() {
-    const counters = document.querySelectorAll("[data-count]");
-    if (!counters.length || typeof ScrollTrigger === "undefined") return;
+function initCounters() {
+  const counters = document.querySelectorAll("[data-count]");
+  if (!counters.length) return;
 
-    counters.forEach((el) => {
-      const target = Number(el.dataset.count) || 0;
-      ScrollTrigger.create({
-        trigger: el,
-        start: "top 90%",
-        once: true,
-        onEnter: () => {
-          const obj = { val: 0 };
-          gsap.to(obj, {
-            val: target,
-            duration: prefersReduced ? 0.01 : 2.2,
-            ease: "power2.out",
-            onUpdate: () => {
-              el.textContent = Math.floor(obj.val).toLocaleString();
-            }
-          });
-        }
-      });
+  counters.forEach((el) => {
+    const target = Number(el.dataset.count) || 0;
+    const obj = { val: 0 };
+    
+    gsap.to(obj, {
+      val: target,
+      duration: 2.5,
+      ease: "power2.out",
+      onUpdate: () => {
+        el.textContent = Math.floor(obj.val).toLocaleString();
+      }
     });
-  }
+  });
+}
 
   /* Zodiac */
   function initZodiac() {
@@ -752,10 +746,11 @@
   setZoomState(0);
   requestAnimationFrame(render);
 
-  /* Deferred GSAP (after loader) */
+/* Deferred GSAP (fixed) */
+window.addEventListener("load", () => {
   setTimeout(() => {
-    initCounters();
+    initCounters(); // Ab ye direct run hoga jab page load ho jayega
     initNavSpy();
     initCursor();
-  }, 3000);
-})();
+  }, 500); 
+});
