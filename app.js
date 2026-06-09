@@ -748,7 +748,7 @@
   /* Boot */
   initLoader();
   initMagnetic();
-  initGemCards();
+  initGemField();
   initZodiac();
   resize();
   setZoomState(0);
