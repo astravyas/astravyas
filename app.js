@@ -1,5 +1,5 @@
 /**
- * ASTRA VAULT — Core experience engine
+ * ASTRA VYAS — Core experience engine
  * Lenis smooth scroll · GSAP cinematic motion · Canvas void field
  */
 (function initAstraVault() {
@@ -8,7 +8,9 @@
   /* DOM refs */
   const canvas = document.querySelector("#void-field");
   const ctx = canvas?.getContext("2d", { alpha: false, desynchronized: true });
-  const vault = document.querySelector(".vault");
+  const vault =
+  document.querySelector(".vyas") ||
+  document.querySelector(".vault");
   const trigger = document.querySelector(".obsidian-trigger");
   const cursor = document.querySelector(".energy-cursor");
   const cursorTrail = document.querySelector(".cursor-trail");
