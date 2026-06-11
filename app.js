@@ -2,7 +2,7 @@
  * ASTRA VYAS — Core experience engine
  * Lenis smooth scroll · GSAP cinematic motion · Canvas void field
  */
-(function initAstraVault() {
+(function initAstraVyas() {
   "use strict";
 
   /* DOM refs */
@@ -31,17 +31,17 @@
   /* Zodiac copy */
   const zodiacData = {
     aries: { planet: "Mars · Fire", title: "Aries — The Sacred Flame", text: "Your path demands decisive initiation. This season favors courage over hesitation — align Ruby only after full chart verification." },
-    taurus: { planet: "Venus · Earth", title: "Taurus — The Eternal Garden", text: "Stability and sensual wisdom rise. Diamond or Emerald paths open when Venus is dignified in your chart — never by impulse alone." },
+    taurus: { planet: "Venus · Earth", title: "Taurus — The Eternal Garden", text: "Stability and sensual wisdom rise. Diamond or Emerald paths open when Venus is dignified in your chart — never forced." },
     gemini: { planet: "Mercury · Air", title: "Gemini — Twin Intelligence", text: "Communication becomes your ritual. Emerald supports Mercury only when mental restlessness is chart-confirmed, not assumed." },
     cancer: { planet: "Moon · Water", title: "Cancer — Lunar Sanctuary", text: "Emotional tides require Pearl's soft resonance. Home, mother-energy and inner peace seek structured remedy, not escape." },
     leo: { planet: "Sun · Fire", title: "Leo — Solar Sovereignty", text: "Authority and creative radiance expand. Ruby amplifies the Sun — verify strength before wearing, lest ego outpaces dharma." },
     virgo: { planet: "Mercury · Earth", title: "Virgo — Precision Dharma", text: "Discipline refines destiny. Emerald serves analytical clarity; ritual consistency matters more than intensity." },
     libra: { planet: "Venus · Air", title: "Libra — Sacred Balance", text: "Relationships mirror karma. Diamond and Opal paths honor Venus — timing of partnership matters as much as compatibility." },
     scorpio: { planet: "Mars · Water", title: "Scorpio — Depth Alchemy", text: "Transformation is your native language. Red Coral and intense mantra work require guru-level chart gatekeeping." },
-    sagittarius: { planet: "Jupiter · Fire", title: "Sagittarius — Expansive Wisdom", text: "Yellow Sapphire aligns with Jupiter's grace — wisdom, travel, teaching. Over-expansion without grounding invites dasha turbulence." },
-    capricorn: { planet: "Saturn · Earth", title: "Capricorn — Karmic Architecture", text: "Blue Sapphire carries Saturn's weight — discipline, delay, mastery. Never worn casually; trial period is essential." },
-    aquarius: { planet: "Saturn · Air", title: "Aquarius — Cosmic Vision", text: "Innovation meets ancient law. Saturn remedies plus humanitarian dharma align your eccentric path to collective good." },
-    pisces: { planet: "Jupiter · Water", title: "Pisces — Mystic Ocean", text: "Pearl and Yellow Sapphire soothe spiritual sensitivity. Boundaries are remedies too — compassion needs structure." }
+    sagittarius: { planet: "Jupiter · Fire", title: "Sagittarius — Expansive Wisdom", text: "Yellow Sapphire aligns with Jupiter's grace — wisdom, travel, teaching. Over-expansion without growth becomes fragmentation." },
+    capricorn: { planet: "Saturn · Earth", title: "Capricorn — Karmic Architecture", text: "Blue Sapphire carries Saturn's weight — discipline, delay, mastery. Never worn casually; trial period mandatory." },
+    aquarius: { planet: "Saturn · Air", title: "Aquarius — Cosmic Vision", text: "Innovation meets ancient law. Saturn remedies plus humanitarian dharma align your eccentric path to collective service." },
+    pisces: { planet: "Jupiter · Water", title: "Pisces — Mystic Ocean", text: "Pearl and Yellow Sapphire soothe spiritual sensitivity. Boundaries are remedies too — compassion needs structure." },
   };
 
   const zoomStates = [
@@ -432,7 +432,7 @@
       s.life = 0;
     });
 
-    coreMessage.textContent = "Astra Vault awakened. Sacred gemstone realm online.";
+    coreMessage.textContent = "Astra Vyas awakened. Sacred gemstone realm online.";
     window.AstraGems?.showField?.();
     startAutoZoom();
     revealVisibleContent();
@@ -546,4 +546,132 @@
   function initGemCards() {
     document.querySelectorAll(".gem-card[data-tilt]").forEach((card) => {
       card.addEventListener("pointermove", (e) => {
-        
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        const shine = card.querySelector(".gem-shine");
+        if (shine) {
+          shine.style.background = `radial-gradient(circle at ${50 + (x / rect.width) * 100}% ${50 + (y / rect.height) * 100}%, rgba(255,255,255,0.35) 0%, transparent 60%)`;
+        }
+      });
+    });
+  }
+
+  /* Touch trail */
+  function initTrail() {
+    if (isTouch || !trailPool.length) return;
+    let lastX = 0;
+    let lastY = 0;
+    document.addEventListener("pointermove", (e) => {
+      if (Math.hypot(e.clientX - lastX, e.clientY - lastY) < 8) return;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      const t = trailPool[trailIndex % trailPool.length];
+      if (!t) return;
+      t.style.left = `${e.clientX}px`;
+      t.style.top = `${e.clientY}px`;
+      t.style.opacity = "1";
+      trailIndex += 1;
+      gsap?.to(t, { opacity: 0, duration: 0.8, overwrite: "auto" });
+    });
+  }
+
+  /* Zodiac tabs */
+  function initZodiacTabs() {
+    document.querySelectorAll(".zodiac-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const sign = btn.dataset.sign;
+        const data = zodiacData[sign];
+        if (!data) return;
+        document.querySelectorAll(".zodiac-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        const panel = document.querySelector(".zodiac-reading");
+        if (panel) {
+          panel.querySelector("[data-zodiac-planet]").textContent = data.planet;
+          panel.querySelector("[data-zodiac-title]").textContent = data.title;
+          panel.querySelector("[data-zodiac-text]").textContent = data.text;
+        }
+      });
+    });
+  }
+
+  /* Canvas mouse track */
+  function initCanvasTrack() {
+    document.addEventListener("pointermove", (e) => {
+      const cx = window.innerWidth / 2;
+      const cy = window.innerHeight / 2;
+      mouse.tx = e.clientX / window.innerWidth;
+      mouse.ty = e.clientY / window.innerHeight;
+      const dx = e.clientX - cx;
+      const dy = e.clientY - cy;
+      const speed = Math.hypot(dx, dy);
+      mouse.speed = Math.min(1, speed / 200);
+      updateTilt(mouse.tx, mouse.ty);
+    });
+  }
+
+  /* Cursor + energy field */
+  function initCursor() {
+    const energyCursor = document.querySelector(".energy-cursor");
+    if (!energyCursor || isTouch) return;
+    document.addEventListener("pointermove", (e) => {
+      gsap?.to(energyCursor, {
+        left: e.clientX,
+        top: e.clientY,
+        duration: 0.15,
+        overwrite: "auto"
+      });
+    });
+    document.querySelectorAll("a, button, .magnetic-target, input, textarea, select").forEach((el) => {
+      el.addEventListener("pointerenter", () => energyCursor.classList.add("is-hover"));
+      el.addEventListener("pointerleave", () => energyCursor.classList.remove("is-hover"));
+    });
+  }
+
+  /* Form submit */
+  function initForm() {
+    form?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      openWhatsApp(new FormData(form));
+    });
+  }
+
+  /* Entry skip */
+  function initEntrySkip() {
+    document.getElementById("skip-entry")?.addEventListener("click", () => {
+      awaken(true);
+    });
+  }
+
+  /* Obsidian trigger */
+  function initObsidianTrigger() {
+    document.querySelector(".obsidian-trigger")?.addEventListener("click", () => {
+      awaken();
+    });
+  }
+
+  /* Init all systems */
+  function init() {
+    resize();
+    initLoader();
+    initZodiacTabs();
+    initCanvasTrack();
+    initCursor();
+    initForm();
+    initEntrySkip();
+    initObsidianTrigger();
+    initMagnetic();
+    initGemCards();
+    initTrail();
+    render(0);
+    window.addEventListener("resize", resize);
+    if (prefersReduced) document.body.classList.add("prefers-reduced");
+  }
+
+  /* DOM ready */
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
