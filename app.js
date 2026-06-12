@@ -1,14 +1,14 @@
 /**
- * ASTRA VYAS — Core experience engine
+ * ASTRA VAULT — Core experience engine
  * Lenis smooth scroll · GSAP cinematic motion · Canvas void field
  */
-(function initAstraVyas() {
+(function initAstraVault() {
   "use strict";
 
   /* DOM refs */
   const canvas = document.querySelector("#void-field");
   const ctx = canvas?.getContext("2d", { alpha: false, desynchronized: true });
-  const vault = document.querySelector(".vyas");
+  const vault = document.querySelector(".vault");
   const trigger = document.querySelector(".obsidian-trigger");
   const cursor = document.querySelector(".energy-cursor");
   const cursorTrail = document.querySelector(".cursor-trail");
@@ -31,17 +31,17 @@
   /* Zodiac copy */
   const zodiacData = {
     aries: { planet: "Mars · Fire", title: "Aries — The Sacred Flame", text: "Your path demands decisive initiation. This season favors courage over hesitation — align Ruby only after full chart verification." },
-    taurus: { planet: "Venus · Earth", title: "Taurus — The Eternal Garden", text: "Stability and sensual wisdom rise. Diamond or Emerald paths open when Venus is dignified in your chart — never forced." },
+    taurus: { planet: "Venus · Earth", title: "Taurus — The Eternal Garden", text: "Stability and sensual wisdom rise. Diamond or Emerald paths open when Venus is dignified in your chart — never by impulse alone." },
     gemini: { planet: "Mercury · Air", title: "Gemini — Twin Intelligence", text: "Communication becomes your ritual. Emerald supports Mercury only when mental restlessness is chart-confirmed, not assumed." },
     cancer: { planet: "Moon · Water", title: "Cancer — Lunar Sanctuary", text: "Emotional tides require Pearl's soft resonance. Home, mother-energy and inner peace seek structured remedy, not escape." },
     leo: { planet: "Sun · Fire", title: "Leo — Solar Sovereignty", text: "Authority and creative radiance expand. Ruby amplifies the Sun — verify strength before wearing, lest ego outpaces dharma." },
     virgo: { planet: "Mercury · Earth", title: "Virgo — Precision Dharma", text: "Discipline refines destiny. Emerald serves analytical clarity; ritual consistency matters more than intensity." },
     libra: { planet: "Venus · Air", title: "Libra — Sacred Balance", text: "Relationships mirror karma. Diamond and Opal paths honor Venus — timing of partnership matters as much as compatibility." },
     scorpio: { planet: "Mars · Water", title: "Scorpio — Depth Alchemy", text: "Transformation is your native language. Red Coral and intense mantra work require guru-level chart gatekeeping." },
-    sagittarius: { planet: "Jupiter · Fire", title: "Sagittarius — Expansive Wisdom", text: "Yellow Sapphire aligns with Jupiter's grace — wisdom, travel, teaching. Over-expansion without growth becomes fragmentation." },
-    capricorn: { planet: "Saturn · Earth", title: "Capricorn — Karmic Architecture", text: "Blue Sapphire carries Saturn's weight — discipline, delay, mastery. Never worn casually; trial period mandatory." },
-    aquarius: { planet: "Saturn · Air", title: "Aquarius — Cosmic Vision", text: "Innovation meets ancient law. Saturn remedies plus humanitarian dharma align your eccentric path to collective service." },
-    pisces: { planet: "Jupiter · Water", title: "Pisces — Mystic Ocean", text: "Pearl and Yellow Sapphire soothe spiritual sensitivity. Boundaries are remedies too — compassion needs structure." },
+    sagittarius: { planet: "Jupiter · Fire", title: "Sagittarius — Expansive Wisdom", text: "Yellow Sapphire aligns with Jupiter's grace — wisdom, travel, teaching. Over-expansion without grounding invites dasha turbulence." },
+    capricorn: { planet: "Saturn · Earth", title: "Capricorn — Karmic Architecture", text: "Blue Sapphire carries Saturn's weight — discipline, delay, mastery. Never worn casually; trial period is essential." },
+    aquarius: { planet: "Saturn · Air", title: "Aquarius — Cosmic Vision", text: "Innovation meets ancient law. Saturn remedies plus humanitarian dharma align your eccentric path to collective good." },
+    pisces: { planet: "Jupiter · Water", title: "Pisces — Mystic Ocean", text: "Pearl and Yellow Sapphire soothe spiritual sensitivity. Boundaries are remedies too — compassion needs structure." }
   };
 
   const zoomStates = [
@@ -98,11 +98,17 @@
         loaderParticles.appendChild(s);
       }
     }
-      const finish = () => {
-  loader?.classList.add("is-done");
-  document.body.classList.add("is-loaded");
-  awaken(true);
-};
+
+    const finish = () => {
+      loader?.classList.add("is-done");
+      document.body.classList.add("is-loaded");
+
+      /* Only skip gate if ?skip=1 in URL — always show obsidian on normal open */
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("skip") === "1") {
+        awaken(true);
+      }
+    };
 
     if (prefersReduced) {
       setTimeout(finish, 300);
@@ -432,7 +438,7 @@
       s.life = 0;
     });
 
-    coreMessage.textContent = "Astra Vyas awakened. Sacred gemstone realm online.";
+    coreMessage.textContent = "Astra Vault awakened. Sacred gemstone realm online.";
     window.AstraGems?.showField?.();
     startAutoZoom();
     revealVisibleContent();
@@ -547,131 +553,215 @@
     document.querySelectorAll(".gem-card[data-tilt]").forEach((card) => {
       card.addEventListener("pointermove", (e) => {
         const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        const shine = card.querySelector(".gem-shine");
-        if (shine) {
-          shine.style.background = `radial-gradient(circle at ${50 + (x / rect.width) * 100}% ${50 + (y / rect.height) * 100}%, rgba(255,255,255,0.35) 0%, transparent 60%)`;
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        card.style.setProperty("--shine-x", `${x * 100}%`);
+        card.style.setProperty("--shine-y", `${y * 100}%`);
+      });
+    });
+
+    document.querySelectorAll("[data-tilt]:not(.gem-card)").forEach((card) => {
+      card.addEventListener("pointermove", (e) => {
+        if (isTouch) return;
+        const rect = card.getBoundingClientRect();
+        const rx = ((e.clientY - rect.top) / rect.height - 0.5) * -6;
+        const ry = ((e.clientX - rect.left) / rect.width - 0.5) * 8;
+        card.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      });
+      card.addEventListener("pointerleave", () => {
+        card.style.transform = "";
+      });
+    });
+  }
+
+  /* Stat counters */
+  function initCounters() {
+    const counters = document.querySelectorAll("[data-count]");
+    if (!counters.length || typeof ScrollTrigger === "undefined") return;
+
+    counters.forEach((el) => {
+      const target = Number(el.dataset.count) || 0;
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top 90%",
+        once: true,
+        onEnter: () => {
+          const obj = { val: 0 };
+          gsap.to(obj, {
+            val: target,
+            duration: prefersReduced ? 0.01 : 2.2,
+            ease: "power2.out",
+            onUpdate: () => {
+              el.textContent = Math.floor(obj.val).toLocaleString();
+            }
+          });
         }
       });
     });
   }
 
-  /* Touch trail */
-  function initTrail() {
-    if (isTouch || !trailPool.length) return;
-    let lastX = 0;
-    let lastY = 0;
-    document.addEventListener("pointermove", (e) => {
-      if (Math.hypot(e.clientX - lastX, e.clientY - lastY) < 8) return;
-      lastX = e.clientX;
-      lastY = e.clientY;
-      const t = trailPool[trailIndex % trailPool.length];
-      if (!t) return;
-      t.style.left = `${e.clientX}px`;
-      t.style.top = `${e.clientY}px`;
-      t.style.opacity = "1";
-      trailIndex += 1;
-      gsap?.to(t, { opacity: 0, duration: 0.8, overwrite: "auto" });
-    });
-  }
+  /* Zodiac */
+  function initZodiac() {
+    const planet = document.querySelector("[data-zodiac-planet]");
+    const title = document.querySelector("[data-zodiac-title]");
+    const text = document.querySelector("[data-zodiac-text]");
 
-  /* Zodiac tabs */
-  function initZodiacTabs() {
     document.querySelectorAll(".zodiac-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
-        const sign = btn.dataset.sign;
-        const data = zodiacData[sign];
-        if (!data) return;
-        document.querySelectorAll(".zodiac-btn").forEach((b) => b.classList.remove("active"));
+        document.querySelectorAll(".zodiac-btn").forEach((b) => {
+          b.classList.remove("active");
+          b.setAttribute("aria-selected", "false");
+        });
         btn.classList.add("active");
-        const panel = document.querySelector(".zodiac-reading");
-        if (panel) {
-          panel.querySelector("[data-zodiac-planet]").textContent = data.planet;
-          panel.querySelector("[data-zodiac-title]").textContent = data.title;
-          panel.querySelector("[data-zodiac-text]").textContent = data.text;
+        btn.setAttribute("aria-selected", "true");
+        const data = zodiacData[btn.dataset.sign];
+        if (!data) return;
+        if (typeof gsap !== "undefined") {
+          gsap.fromTo(
+            [planet, title, text],
+            { opacity: 0, y: 12 },
+            { opacity: 1, y: 0, duration: 0.6, stagger: 0.08, ease: "power2.out" }
+          );
         }
+        planet.textContent = data.planet;
+        title.textContent = data.title;
+        text.textContent = data.text;
       });
     });
   }
 
-  /* Canvas mouse track */
-  function initCanvasTrack() {
-    document.addEventListener("pointermove", (e) => {
-      const cx = window.innerWidth / 2;
-      const cy = window.innerHeight / 2;
-      mouse.tx = e.clientX / window.innerWidth;
-      mouse.ty = e.clientY / window.innerHeight;
-      const dx = e.clientX - cx;
-      const dy = e.clientY - cy;
-      const speed = Math.hypot(dx, dy);
-      mouse.speed = Math.min(1, speed / 200);
-      updateTilt(mouse.tx, mouse.ty);
-    });
+  /* Nav active state */
+  function initNavSpy() {
+    const links = document.querySelectorAll(".side-panel nav a");
+    const sections = [...links].map((a) => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+
+    const onScroll = () => {
+      const scrollY = lenis?.scroll ?? lenis?.animatedScroll ?? window.scrollY;
+      let current = sections[0];
+      sections.forEach((sec) => {
+        if (sec.offsetTop - 120 <= scrollY) current = sec;
+      });
+      links.forEach((a) => {
+        const match = current && a.getAttribute("href") === `#${current.id}`;
+        a.classList.toggle("is-active", match);
+      });
+    };
+
+    if (lenis) lenis.on("scroll", onScroll);
+    else window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
   }
 
-  /* Cursor + energy field */
+  /* Custom cursor — single transform anchor so ring stays on pointer */
+  function placeCursorEl(el, x, y, size) {
+    if (!el) return;
+    el.style.left = "0";
+    el.style.top = "0";
+    el.style.width = `${size}px`;
+    el.style.height = `${size}px`;
+    el.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+  }
+
   function initCursor() {
-    const energyCursor = document.querySelector(".energy-cursor");
-    if (!energyCursor || isTouch) return;
-    document.addEventListener("pointermove", (e) => {
-      gsap?.to(energyCursor, {
-        left: e.clientX,
-        top: e.clientY,
-        duration: 0.15,
-        overwrite: "auto"
-      });
-    });
-    document.querySelectorAll("a, button, .magnetic-target, input, textarea, select").forEach((el) => {
-      el.addEventListener("pointerenter", () => energyCursor.classList.add("is-hover"));
-      el.addEventListener("pointerleave", () => energyCursor.classList.remove("is-hover"));
-    });
+    if (isTouch || !cursor) return;
+
+    const maxTrail = 6;
+    for (let i = 0; i < maxTrail; i += 1) {
+      const dot = document.createElement("span");
+      cursorTrail?.appendChild(dot);
+      trailPool.push({ el: dot, x: 0, y: 0, life: 0 });
+    }
   }
 
-  /* Form submit */
-  function initForm() {
-    form?.addEventListener("submit", (e) => {
+  function onPointerMove(event) {
+    const nx = event.clientX / Math.max(1, width);
+    const ny = event.clientY / Math.max(1, height);
+    mouse.tx = nx;
+    mouse.ty = ny;
+    mouse.speed = Math.min(1, Math.hypot(nx - lastMouse.x, ny - lastMouse.y) * 18);
+    lastMouse = { x: nx, y: ny };
+    updateTilt(nx, ny);
+
+    if (cursor) {
+      const size = 28 + mouse.speed * 24;
+      placeCursorEl(cursor, event.clientX, event.clientY, size);
+    }
+
+    if (cursorTrail && trailPool.length) {
+      const t = trailPool[trailIndex % trailPool.length];
+      trailIndex += 1;
+      t.x = event.clientX;
+      t.y = event.clientY;
+      t.life = 1;
+      placeCursorEl(t.el, t.x, t.y, 4);
+      t.el.style.opacity = "0.5";
+      gsap?.to(t.el, { opacity: 0, duration: 0.8, ease: "power2.out" });
+    }
+  }
+
+  /* Event bindings */
+  window.addEventListener("resize", resize);
+
+  window.addEventListener("pointermove", onPointerMove, { passive: true });
+
+  document.addEventListener("visibilitychange", () => {
+    renderActive = !document.hidden;
+  });
+
+  document.addEventListener(
+    "pointerover",
+    (e) => {
+      if (e.target.closest("a, button, input, select, textarea, summary") && cursor) {
+        cursor.classList.add("is-hover");
+      }
+    },
+    true
+  );
+
+  document.addEventListener(
+    "pointerout",
+    (e) => {
+      if (e.target.closest("a, button, input, select, textarea, summary") && cursor) {
+        cursor.classList.remove("is-hover");
+      }
+    },
+    true
+  );
+
+  trigger?.addEventListener("click", () => awaken(false));
+  trigger?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      openWhatsApp(new FormData(form));
-    });
-  }
+      awaken(false);
+    }
+  });
 
-  /* Entry skip */
-  function initEntrySkip() {
-    document.getElementById("skip-entry")?.addEventListener("click", () => {
-      awaken(true);
-    });
-  }
+  document.querySelector("#skip-entry")?.addEventListener("click", () => awaken(true));
 
-  /* Obsidian trigger */
-  function initObsidianTrigger() {
-    document.querySelector(".obsidian-trigger")?.addEventListener("click", () => {
-      awaken();
-    });
-  }
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    openWhatsApp(new FormData(form));
+  });
 
-  /* Init all systems */
-  function init() {
-    resize();
-    initLoader();
-    initZodiacTabs();
-    initCanvasTrack();
+  setInterval(() => {
+    if (!awakened) return;
+    lineIndex = (lineIndex + 1) % coreLines.length;
+    coreMessage.textContent = coreLines[lineIndex];
+  }, 7800);
+
+  /* Boot */
+  initLoader();
+  initMagnetic();
+  initGemCards();
+  initZodiac();
+  resize();
+  setZoomState(0);
+  requestAnimationFrame(render);
+
+  /* Deferred GSAP (after loader) */
+  setTimeout(() => {
+    initCounters();
+    initNavSpy();
     initCursor();
-    initForm();
-    initEntrySkip();
-    initObsidianTrigger();
-    initMagnetic();
-    initGemCards();
-    initTrail();
-    render(0);
-    window.addEventListener("resize", resize);
-    if (prefersReduced) document.body.classList.add("prefers-reduced");
-  }
-
-  /* DOM ready */
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
-  }
+  }, 3000);
 })();
