@@ -1,92 +1,114 @@
 /**
- * ASTRA VAULT — Production-Grade Pipeline
- * Optimized background removal + 3D staging
+ * ASTRA VAULT — Gem photos: background clean + 3D spin ready (FIXED FOR DIAMOND & PEARL)
  */
-
-function initGemField() {
-  const GEM_SELECTOR = ".gem-item";
-  const STAGE_SELECTOR = ".gem-3d-stage";
-
-  // Process all gems
-  const gems = document.querySelectorAll(GEM_SELECTOR);
-  
-  gems.forEach(async (img) => {
-    try {
-      img.crossOrigin = "Anonymous";
-      if (!img.complete) await new Promise(resolve => img.onload = resolve);
-
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d", { willReadFrequently: true });
-      canvas.width = img.naturalWidth;
-      canvas.height = img.naturalHeight;
-      ctx.drawImage(img, 0, 0);
-
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const isWhite = /diamond|pearl/i.test(img.src) || img.dataset.whiteGem !== undefined;
-      
-      applyFloodFill(imageData, isWhite);
-      
-      ctx.putImageData(imageData, 0, 0);
-
-      const stage = img.closest(STAGE_SELECTOR);
-      if (stage) {
-        stage.style.backgroundImage = `url(${canvas.toDataURL("image/png")})`;
-        stage.style.backgroundSize = "contain";
-        stage.style.backgroundRepeat = "no-repeat";
-        stage.style.backgroundPosition = "center";
-        img.style.display = "none";
-        stage.classList.add("is-ready");
-      }
-    } catch (err) {
-      console.error("Gem processing failed:", err);
+(function initGemField() {
+  function isBackgroundPixel(r, g, b, isWhiteGem = false) {
+    if (isWhiteGem) {
+      // 245 bohot strict tha, isko 210 kiya hai taaki off-white corners saaf ho jayein
+      return r > 210 && g > 210 && b > 210;
     }
-  });
-}
-
-/**
- * Optimized Flood Fill Algorithm
- */
-function applyFloodFill(imageData, isWhiteGem) {
-  const { data, width, height } = imageData;
-  const visited = new Uint8Array(width * height);
-  const queue = [];
-
-  const isBg = (r, g, b) => {
-    if (isWhiteGem) return r > 200 && g > 200 && b > 200;
+    
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    const sat = max - min;
     const lum = (r + g + b) / 3;
-    return (lum > 220) || (Math.max(r, g, b) - Math.min(r, g, b) < 30 && lum > 180);
-  };
+    if (sat < 50 && lum > 175) return true;
+    if (r > 248 && g > 248 && b > 248) return true;
+    if (sat < 32 && lum < 32) return true;
+    return false;
+  }
+  function cutOutGem(img, isWhiteGem = false) {
+    const maxSide = 640;
+    const scale = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight, 1));
+    const w = Math.max(1, Math.floor(img.naturalWidth * scale));
+    const h = Math.max(1, Math.floor(img.naturalHeight * scale));
+    const c = document.createElement("canvas");
+    c.width = w;
+    c.height = h;
+    const ctx = c.getContext("2d", { willReadFrequently: true });
+    ctx.drawImage(img, 0, 0, w, h);
+    const data = ctx.getImageData(0, 0, w, h);
+    const px = data.data;
+    const visited = new Uint8Array(w * h);
+    const queue = [];
 
-  // Seed edges
-  for (let x = 0; x < width; x++) {
-    [0, height - 1].forEach(y => {
-      const idx = y * width + x;
-      if (isBg(data[idx * 4], data[idx * 4 + 1], data[idx * 4 + 2])) {
-        visited[idx] = 1;
-        queue.push(idx);
-      }
-    });
+    const trySeed = (x, y) => {
+      const idx = y * w + x;
+      if (visited[idx]) return;
+      const i = idx * 4;
+      if (!isBackgroundPixel(px[i], px[i + 1], px[i + 2], isWhiteGem)) return;
+      visited[idx] = 1;
+      queue.push(idx);
+    };
+
+    for (let x = 0; x < w; x += 1) {
+      trySeed(x, 0);
+      trySeed(x, h - 1);
+    }
+    for (let y = 0; y < h; y += 1) {
+      trySeed(0, y);
+      trySeed(w - 1, y);
+    }
+
+    while (queue.length) {
+      const idx = queue.pop();
+      const i = idx * 4;
+      px[i + 3] = 0;
+      const x = idx % w;
+      const y = (idx / w) | 0;
+      if (x > 0) trySeed(x - 1, y);
+      if (x < w - 1) trySeed(x + 1, y);
+      if (y > 0) trySeed(x, y - 1);
+      if (y < h - 1) trySeed(x, y + 1);
+    }
+
+    ctx.putImageData(data, 0, 0);
+    return c.toDataURL("image/png");
   }
 
-  // Flood fill
-  while (queue.length > 0) {
-    const idx = queue.pop();
-    data[idx * 4 + 3] = 0; // Alpha = Transparent
+  document.querySelectorAll(".gem-jewel").forEach((img) => {
+    const finish = (useCutout) => {
+      const stage = img.closest(".gem-3d-stage");
+      stage?.classList.add("is-ready");
+      if (useCutout) {
+        img.style.mixBlendMode = "normal";
+      }
+    };
 
-    const x = idx % width;
-    const y = (idx / width) | 0;
-
-    [[x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]].forEach(([nx, ny]) => {
-      if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
-        const nIdx = ny * width + nx;
-        if (!visited[nIdx] && isBg(data[nIdx * 4], data[nIdx * 4 + 1], data[nIdx * 4 + 2])) {
-          visited[nIdx] = 1;
-          queue.push(nIdx);
+    const process = () => {
+      try {
+        const srcLower = img.src.toLowerCase();
+        
+        // Agar image transparent PNG hai ya direct load karni hai toh skip attribute use karein
+        if (img.hasAttribute("data-skip-cutout")) {
+          img.style.mixBlendMode = "normal";
+          finish(false);
+          return;
         }
-      }
-    });
-  }
-}
 
-// Initialize
-initGemField();
+        // Auto detect Diamond and Pearl from filename or attribute
+        const isWhiteGem = srcLower.includes("diamond") || srcLower.includes("pearl") || img.hasAttribute("data-white-gem");
+
+        img.src = cutOutGem(img, isWhiteGem);
+        finish(true);
+      } catch (_) {
+        finish(false);
+      }
+    };
+
+    if (img.complete && img.naturalWidth > 0) process();
+    else img.addEventListener("load", process, { once: true });
+
+    img.addEventListener(
+      "error",
+      () => {
+        const alt = img.getAttribute("data-fallback");
+        if (alt && !img.src.endsWith(alt)) img.src = alt;
+        else img.classList.add("is-broken");
+      },
+      { once: true }
+    );
+  });
+
+  window.AstraGems = { showField: () => {} };
+})();
