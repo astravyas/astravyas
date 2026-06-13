@@ -2615,4 +2615,26 @@ h2 {
   .obsidian-burst {
     animation-duration: 48s !important;
   }
+   /* Instagram link button style */
+.insta-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-top: 10px;
+    font-family: 'Outfit', sans-serif;
+}
+
+.insta-action:hover {
+    background: var(--gold);
+    color: var(--void);
+ }
 }
