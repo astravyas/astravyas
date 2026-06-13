@@ -84,38 +84,35 @@
   let motionReady = false;
 
   /* ------------------------------------------------------------------ */
-  /* Loader                                                              */
-  /* ------------------------------------------------------------------ */
-  function initLoader() {
-    if (loaderParticles) {
-      const count = isTouch ? 24 : 48;
-      for (let i = 0; i < count; i += 1) {
-        const s = document.createElement("span");
-        s.style.left = `${Math.random() * 100}%`;
-        s.style.top = `${Math.random() * 100}%`;
-        s.style.animationDelay = `${Math.random() * 4}s`;
-        s.style.opacity = String(0.2 + Math.random() * 0.5);
-        loaderParticles.appendChild(s);
-      }
-    }
-
-    const finish = () => {
-      loader?.classList.add("is-done");
-      document.body.classList.add("is-loaded");
-
-      /* Only skip gate if ?skip=1 in URL — always show obsidian on normal open */
-      const params = new URLSearchParams(window.location.search);
-      if (params.get("skip") === "1") {
-        awaken(true);
-      }
-    };
-
-    if (prefersReduced) {
-      setTimeout(finish, 300);
-    } else {
-      setTimeout(finish, isTouch ? 1200 : 1600);
+/* Loader                                                              */
+/* ------------------------------------------------------------------ */
+function initLoader() {
+  if (loaderParticles) {
+    const count = isTouch ? 24 : 48;
+    for (let i = 0; i < count; i += 1) {
+      const s = document.createElement("span");
+      s.style.left = `${Math.random() * 100}%`;
+      s.style.top = `${Math.random() * 100}%`;
+      s.style.animationDelay = `${Math.random() * 4}s`;
+      s.style.opacity = String(0.2 + Math.random() * 0.5);
+      loaderParticles.appendChild(s);
     }
   }
+
+  const finish = () => {
+    loader?.classList.add("is-done");
+    document.body.classList.add("is-loaded");
+    // Site bina kisi condition ke automatically awaken ho jayegi
+    awaken(true);
+  };
+
+  if (prefersReduced) {
+    setTimeout(finish, 300);
+  } else {
+    // Ye time tum apne hisab se adjust kar sakte ho (abhi 1.6s set hai)
+    setTimeout(finish, isTouch ? 1200 : 1600);
+  }
+}
 
   /* ------------------------------------------------------------------ */
   /* Lenis + GSAP                                                        */
