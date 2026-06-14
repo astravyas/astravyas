@@ -762,30 +762,32 @@ function initLoader() {
     initCursor();
   }, 3000);
 })();
-/* --- PROFESSIONAL TRANSLATION ENGINE --- */
+/* --- ROBUST TRANSLATION ENGINE --- */
 window.autoTranslate = function() {
     const dictionary = {
-        "Premium astrology, gemstones & sacred remedies.": "प्रीमियम ज्योतिष, रत्न और पवित्र उपाय।",
-        "Ancient intelligence. Futuristic clarity.": "प्राचीन बुद्धिमत्ता। भविष्योन्मुखी स्पष्टता।",
-        "Janm Patrika & Kundli": "जन्म पत्रिका और कुंडली",
-        "Birth chart, graha position, houses, yogas, dashas, dosha detection and life timing.": "जन्म कुंडली, ग्रह स्थिति, भाव, योग, दशा, दोष और जीवन की महत्वपूर्ण घटनाओं का सटीक विश्लेषण।",
-        "Request reading": "परामर्श के लिए अनुरोध",
-        "Consult Now": "परामर्श लें",
-        "Direct WhatsApp": "सीधा व्हाट्सएप पर जुड़ें",
-        "Years of practice": "वर्षों का अनुभव",
-        "Sacred consultations": "पवित्र परामर्श",
-        "Navratna pathways": "नवरत्न उपाय",
-        "Our Heritage": "हमारी विरासत"
+        "our heritage": "हमारी विरासत",
+        "consult now": "परामर्श लें",
+        "ancient intelligence. futuristic clarity.": "प्राचीन बुद्धिमत्ता। भविष्योन्मुखी स्पष्टता।",
+        "premium astrology, gemstones & sacred remedies.": "प्रीमियम ज्योतिष, रत्न और पवित्र उपाय।",
+        "contact": "संपर्क करें",
+        "temple": "मंदिर",
+        "astrology": "ज्योतिष",
+        "gemstones": "रत्न",
+        "rudraksha": "रुद्राक्ष",
+        "consultation": "परामर्श",
+        "zodiac": "राशिफल",
+        "journey": "यात्रा",
+        "knowledge": "ज्ञान",
+        "voices": "अनुभव"
     };
-
     const elements = document.querySelectorAll('h1, h2, h3, p, a, span, button, strong');
     elements.forEach(el => {
         let text = el.innerText.trim();
-        // Name ko skip karo
-        if (text.includes("Astra Vyas") || text.includes("Raghvendra Kumar Vyas")) return;
+        let lowerText = text.toLowerCase();
         
-        if (dictionary[text]) {
-            el.innerText = dictionary[text];
+        // Agar dictionary mein match mil jaye, toh badal do
+        if (dictionary[lowerText]) {
+            el.innerText = dictionary[lowerText];
         }
     });
 };
