@@ -769,21 +769,19 @@ const dictionary = {
     "Ancient intelligence. Futuristic clarity.": "प्राचीन बुद्धिमत्ता। भविष्योन्मुखी स्पष्टता।",
     "Contact": "संपर्क करें"
 };
-
-function autoTranslate() {
+// Function ko global bana do taaki button use dekh sake
+window.autoTranslate = function() {
     const elements = document.querySelectorAll('h1, h2, h3, p, a, span, button, strong');
     elements.forEach(el => {
         let text = el.innerText.trim();
-        
-        // Astra Vyas aur Raghvendra Kumar Vyas ko chhodkar baki translate karo
+        // Astra Vyas aur Raghvendra Kumar Vyas ko skip karo
         if (text.includes("Astra Vyas") || text.includes("Raghvendra Kumar Vyas")) return;
         
         if (dictionary[text]) {
             el.innerText = dictionary[text];
         }
     });
-}
-
+};
 // Button par click karte hi chalega
 document.getElementById('lang-switch').addEventListener('click', autoTranslate);
 
