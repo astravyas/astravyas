@@ -762,19 +762,20 @@ function initLoader() {
     initCursor();
   }, 3000);
 })();
-// --- AUTO TRANSLATE ENGINE ---
-const dictionary = {
-    "Our Heritage": "हमारी विरासत",
-    "Consult Now": "परामर्श लें",
-    "Ancient intelligence. Futuristic clarity.": "प्राचीन बुद्धिमत्ता। भविष्योन्मुखी स्पष्टता।",
-    "Contact": "संपर्क करें"
-};
-// Function ko global bana do taaki button use dekh sake
+/* --- GLOBAL TRANSLATION LOGIC --- */
 window.autoTranslate = function() {
+    const dictionary = {
+        "Our Heritage": "हमारी विरासत",
+        "Consult Now": "परामर्श लें",
+        "Ancient intelligence. Futuristic clarity.": "प्राचीन बुद्धिमत्ता। भविष्योन्मुखी स्पष्टता।",
+        "Contact": "संपर्क करें",
+        "Premium astrology, gemstones & sacred remedies.": "प्रीमियम ज्योतिष, रत्न और पवित्र उपाय।"
+    };
+
     const elements = document.querySelectorAll('h1, h2, h3, p, a, span, button, strong');
     elements.forEach(el => {
         let text = el.innerText.trim();
-        // Astra Vyas aur Raghvendra Kumar Vyas ko skip karo
+        // Astra Vyas aur Raghvendra Kumar Vyas ko translate nahi karna hai
         if (text.includes("Astra Vyas") || text.includes("Raghvendra Kumar Vyas")) return;
         
         if (dictionary[text]) {
