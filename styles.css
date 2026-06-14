@@ -2666,3 +2666,42 @@ body::before {
     font-family: 'Outfit', sans-serif;
 }
 .floating-consult-btn:hover { transform: translateY(-10px); }
+/* ==========================================================================
+   PREMIUM LUXURY UPGRADES
+   ========================================================================== */
+
+/* Gold text gradient for premium feel */
+.hero-title .accent {
+    background: linear-gradient(to right, #c9a962, #e8d5a3, #c9a962);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Custom Scrollbar for rich feel */
+::-webkit-scrollbar { 
+    width: 8px; 
+}
+::-webkit-scrollbar-track { 
+    background: #050505; 
+}
+::-webkit-scrollbar-thumb { 
+    background: #c9a962; 
+    border-radius: 4px; 
+    border: 1px solid #000;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #e8d5a3;
+}
+
+/* Subtle pulse for main action buttons */
+.gold-action {
+    animation: pulse 3s infinite;
+    position: relative;
+}
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(201, 169, 98, 0.4); }
+    70% { box-shadow: 0 0 0 15px rgba(201, 169, 98, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(201, 169, 98, 0); }
+}
