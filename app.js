@@ -762,20 +762,26 @@ function initLoader() {
     initCursor();
   }, 3000);
 })();
-/* --- GLOBAL TRANSLATION LOGIC --- */
+/* --- PROFESSIONAL TRANSLATION ENGINE --- */
 window.autoTranslate = function() {
     const dictionary = {
-        "Our Heritage": "हमारी विरासत",
-        "Consult Now": "परामर्श लें",
+        "Premium astrology, gemstones & sacred remedies.": "प्रीमियम ज्योतिष, रत्न और पवित्र उपाय।",
         "Ancient intelligence. Futuristic clarity.": "प्राचीन बुद्धिमत्ता। भविष्योन्मुखी स्पष्टता।",
-        "Contact": "संपर्क करें",
-        "Premium astrology, gemstones & sacred remedies.": "प्रीमियम ज्योतिष, रत्न और पवित्र उपाय।"
+        "Janm Patrika & Kundli": "जन्म पत्रिका और कुंडली",
+        "Birth chart, graha position, houses, yogas, dashas, dosha detection and life timing.": "जन्म कुंडली, ग्रह स्थिति, भाव, योग, दशा, दोष और जीवन की महत्वपूर्ण घटनाओं का सटीक विश्लेषण।",
+        "Request reading": "परामर्श के लिए अनुरोध",
+        "Consult Now": "परामर्श लें",
+        "Direct WhatsApp": "सीधा व्हाट्सएप पर जुड़ें",
+        "Years of practice": "वर्षों का अनुभव",
+        "Sacred consultations": "पवित्र परामर्श",
+        "Navratna pathways": "नवरत्न उपाय",
+        "Our Heritage": "हमारी विरासत"
     };
 
     const elements = document.querySelectorAll('h1, h2, h3, p, a, span, button, strong');
     elements.forEach(el => {
         let text = el.innerText.trim();
-        // Astra Vyas aur Raghvendra Kumar Vyas ko translate nahi karna hai
+        // Name ko skip karo
         if (text.includes("Astra Vyas") || text.includes("Raghvendra Kumar Vyas")) return;
         
         if (dictionary[text]) {
