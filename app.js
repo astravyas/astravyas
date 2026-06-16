@@ -762,43 +762,46 @@ function initLoader() {
     initCursor();
   }, 3000);
 })();
-/* --- UNIVERSAL TRANSLATOR ENGINE --- */
-window.autoTranslate = function() {
-    const translationMap = {
-        "Our Heritage": "हमारी विरासत",
-        "Consult Now": "परामर्श लें",
-        "Ancient intelligence. Futuristic clarity.": "प्राचीन बुद्धिमत्ता। भविष्योन्मुखी स्पष्टता।",
-        "Premium astrology, gemstones & sacred remedies.": "प्रीमियम ज्योतिष, रत्न और पवित्र उपाय।",
-        "Consult Astrologer": "ज्योतिषी से परामर्श करें",
-        "Years of practice": "वर्षों का अनुभव",
-        "Sacred consultations": "पवित्र परामर्श",
-        "Navratna pathways": "नवरत्न उपाय",
-        "Astrology Services": "ज्योतिष सेवाएं",
-        "Every path of destiny, separated with sacred clarity.": "भाग्य का हर रास्ता, पवित्र स्पष्टता के साथ।",
-        "Janm Patrika & Kundli": "जन्म पत्रिका और कुंडली",
-        "Birth chart, graha position, houses, yogas, dashas, dosha detection and life timing.": "जन्म कुंडली, ग्रह स्थिति, भाव, योग, दशा, दोष और जीवन की घटनाओं का विश्लेषण।",
-        "Marriage Matching": "कुंडली मिलान",
-        "Guna milan, mangal dosha, compatibility, family harmony and marriage timing windows.": "गुण मिलान, मंगल दोष, अनुकूलता और वैवाहिक समय का मिलान।",
-        "Contact": "संपर्क करें",
-        "Follow on Instagram": "इंस्टाग्राम पर फॉलो करें"
-        // Yahan jitne marzi words add karte jao...
-    };
+let currentLang =
+localStorage.getItem("astravyas-lang") || "en";
 
-    // Sare text nodes ko target karo
-    const allElements = document.querySelectorAll('h1, h2, h3, p, a, span, button, strong, li, summary');
-    
-    allElements.forEach(el => {
-        let originalText = el.innerText.trim();
-        
-        // Skip names
-        if (originalText.includes("Astra Vyas") || originalText.includes("Raghvendra")) return;
+function applyLanguage(lang){
 
-        // Agar map mein match mila, toh replace karo
-        if (translationMap[originalText]) {
-            el.innerText = translationMap[originalText];
-        }
-    });
-};
-// Button par click karte hi chalega
-document.getElementById('lang-switch').addEventListener('click', autoTranslate);
+  const html = document.documentElement;
+
+  if(lang === "hi"){
+    html.classList.add("lang-hi");
+  }else{
+    html.classList.remove("lang-hi");
+  }
+
+  const btn =
+  document.getElementById("lang-switch");
+
+  if(btn){
+    btn.textContent =
+      lang === "hi"
+      ? "English"
+      : "हिंदी";
+  }
+
+  localStorage.setItem(
+    "astravyas-lang",
+    lang
+  );
+}
+
+document
+.getElementById("lang-switch")
+?.addEventListener("click",()=>{
+
+  currentLang =
+  currentLang === "en"
+  ? "hi"
+  : "en";
+
+  applyLanguage(currentLang);
+});
+
+applyLanguage(currentLang);
 
