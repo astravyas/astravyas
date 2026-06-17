@@ -779,8 +779,8 @@ const translations = {
         "services_desc": "Every path of destiny, separated with sacred clarity.",
         "gem_title": "Sacred Gemstone Collection",
         "rudra_title": "Premium Rudraksha Showcase",
-        "luxury_title": "Luxury Sacred Objects",
         "about_title": "Continuing a Traditional Family Heritage",
+        "faq_title": "Frequently Asked",
         "form_name": "Full Name",
         "form_phone": "Phone Number",
         "form_dob": "Birth Date",
@@ -805,8 +805,8 @@ const translations = {
         "services_desc": "जीवन के प्रत्येक मार्ग को दिव्य स्पष्टता के साथ समझें।",
         "gem_title": "पवित्र Gemstone संग्रह",
         "rudra_title": "विशेष Rudraksha संग्रह",
-        "luxury_title": "पवित्र आध्यात्मिक साधन",
         "about_title": "पारंपरिक पारिवारिक विरासत का संरक्षण",
+        "faq_title": "अक्सर पूछे जाने वाले प्रश्न",
         "form_name": "पूरा नाम",
         "form_phone": "मोबाइल नंबर",
         "form_dob": "जन्म तिथि",
@@ -816,4 +816,3 @@ const translations = {
         "whatsapp_btn": "विवरण सहित WhatsApp खोलें"
     }
 };
-
