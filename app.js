@@ -762,74 +762,117 @@ function initLoader() {
     initCursor();
   }, 3000);
 })();
+/* ASTRA VYAS - COMPLETE app.js */
+
 const translations = {
     "en": {
-        "hero_title": "Ancient Futuristic Cosmic Temple",
-        "hero_sub": "Premium astrology, gemstones & sacred remedies",
-        "btn_start": "Begin Consultation",
-        "nav_home": "Temple",
-        "nav_gem": "Gemstones",
-        "nav_rudra": "Rudraksha",
-        "nav_ast": "Astrology",
-        "nav_con": "Contact",
-        "stats_years": "Years of practice",
-        "stats_consult": "Sacred consultations",
-        "stats_navratna": "Navratna pathways",
-        "services_title": "Astrology Services",
-        "services_desc": "Every path of destiny, separated with sacred clarity.",
-        "gem_title": "Sacred Gemstone Collection",
-        "rudra_title": "Premium Rudraksha Showcase",
-        "about_title": "Continuing a Traditional Family Heritage",
-        "faq_title": "Frequently Asked",
-        "form_name": "Full Name",
-        "form_phone": "Phone Number",
-        "form_dob": "Birth Date",
-        "form_time": "Birth Time",
-        "form_place": "Birth Place",
-        "form_ask": "Question / Requirement",
-        "whatsapp_btn": "Open WhatsApp With Details"
+        // Navigation
+        "nav_temple": "Temple", "nav_astrology": "Astrology", "nav_gemstones": "Gemstones",
+        "nav_rudraksha": "Rudraksha", "nav_consultation": "Consultation", "nav_zodiac": "Zodiac",
+        "nav_journey": "Journey", "nav_knowledge": "Knowledge", "nav_voices": "Voices",
+        "nav_faq": "FAQ", "nav_contact": "Contact",
+
+        // Gemstones
+        "gem_eyebrow": "Sacred Gemstone Collection",
+        "gem_title": "Collectible stones that breathe with planetary intelligence.",
+        "gem1_name": "Ruby", "gem1_desc": "Sun energy, authority, confidence and personal radiance.",
+        "gem2_name": "Pearl", "gem2_desc": "Moon energy, calmness, emotional balance and mental peace.",
+        "gem3_name": "Red Coral", "gem3_desc": "Mars energy, courage, action, vitality and protection.",
+        "gem4_name": "Diamond", "gem4_desc": "Venus energy, luxury, attraction, beauty and relationship refinement.",
+        "gem5_name": "Blue Sapphire", "gem5_desc": "Saturn energy, discipline, speed, karma and stability.",
+        "gem6_name": "Yellow Sapphire", "gem6_desc": "Jupiter energy, wisdom, prosperity, marriage and dharma support.",
+        "gem7_name": "Venus Stone", "gem7_desc": "Creative charm, relationship harmony and soft luxury resonance.",
+        "gem8_name": "Protection", "gem8_desc": "Focus, grounding, confidence and practical energy support.",
+
+        // Journey
+        "journey_eyebrow": "Cosmic Timeline",
+        "journey_title": "The journey from question to sacred resolution.",
+        "j1_year": "Day 01", "j1_title": "Intention received", "j1_desc": "Birth details, questions and life context enter the Astra field.",
+        "j2_year": "Day 02–04", "j2_title": "Chart immersion", "j2_desc": "Deep kundli analysis: grahas, yogas, dashas, doshas and timing windows.",
+        "j3_year": "Day 05", "j3_title": "Sacred prescription", "j3_desc": "Gemstone, rudraksha, yantra and mantra protocol delivered.",
+        "j4_year": "Ongoing", "j4_title": "Living guidance", "j4_desc": "Follow-up support for muhurat and course corrections.",
+
+        // About
+        "about_eyebrow": "About us",
+        "about_title": "Continuing a Traditional Family Heritage of Vedic Astrology",
+        "about_p1": "Astra Vyas carries forward the heritage of श्री जमनालाल व्यास ज्योतिर्विज्ञान केंद्र.",
+        "about_list1": "Vedic Astrology Consultation", "about_list2": "Kundli & Janm Patrika Analysis",
+        "about_list3": "Marriage Compatibility Guidance", "about_list4": "Gemstone Consultation",
+
+        // FAQ
+        "faq_eyebrow": "Frequently Asked",
+        "faq_title": "Clarity before you enter the chamber.",
+        "faq1_q": "Do I need exact birth time?", "faq1_a": "Yes, for precise lagna.",
+
+        // Contact
+        "contact_eyebrow": "Direct Consultation",
+        "form_name": "Full Name", "form_name_ph": "Your full name",
+        "form_phone": "Phone", "form_phone_ph": "+91...",
+        "form_dob": "Birth Date", "form_time": "Birth Time",
+        "form_place": "Birth Place", "form_ask": "Question / Requirement",
+        "form_q_ph": "Write your question...",
+        "form_submit": "Open WhatsApp With Details"
     },
     "hi": {
-        "hero_title": "दिव्य वैदिक ज्योतिष केंद्र",
-        "hero_sub": "वैदिक ज्योतिष, Gemstone परामर्श एवं पारंपरिक आध्यात्मिक उपाय",
-        "btn_start": "परामर्श प्रारम्भ करें",
-        "nav_home": "मुख्य पृष्ठ",
-        "nav_gem": "Gemstones",
-        "nav_rudra": "Rudraksha",
-        "nav_ast": "ज्योतिष",
-        "nav_con": "संपर्क",
-        "stats_years": "वर्षों का अनुभव",
-        "stats_consult": "सफल परामर्श",
-        "stats_navratna": "Navratna मार्ग",
-        "services_title": "ज्योतिष सेवाएँ",
-        "services_desc": "जीवन के प्रत्येक मार्ग को दिव्य स्पष्टता के साथ समझें।",
-        "gem_title": "पवित्र Gemstone संग्रह",
-        "rudra_title": "विशेष Rudraksha संग्रह",
+        // Navigation
+        "nav_temple": "मंदिर", "nav_astrology": "ज्योतिष", "nav_gemstones": "रत्न",
+        "nav_rudraksha": "रुद्राक्ष", "nav_consultation": "परामर्श", "nav_zodiac": "राशिफल",
+        "nav_journey": "हमारी यात्रा", "nav_knowledge": "ज्ञान", "nav_voices": "अनुभव",
+        "nav_faq": "सामान्य प्रश्न", "nav_contact": "संपर्क",
+
+        // Gemstones
+        "gem_eyebrow": "पवित्र रत्न संग्रह",
+        "gem_title": "ग्रहों की ऊर्जा से ओत-प्रोत रत्न।",
+        "gem1_name": "माणिक (Ruby)", "gem1_desc": "सूर्य की ऊर्जा, अधिकार, आत्मविश्वास और चमक।",
+        "gem2_name": "मोती (Pearl)", "gem2_desc": "चंद्रमा की ऊर्जा, शांति, भावनात्मक संतुलन और मानसिक सुख।",
+        "gem3_name": "मूंगा (Red Coral)", "gem3_desc": "मंगल की ऊर्जा, साहस, क्रियाशीलता, जीवन शक्ति और सुरक्षा।",
+        "gem4_name": "हीरा (Diamond)", "gem4_desc": "शुक्र की ऊर्जा, विलासिता, आकर्षण, सुंदरता और संबंधों में मधुरता।",
+        "gem5_name": "नीलम (Blue Sapphire)", "gem5_desc": "शनि की ऊर्जा, अनुशासन, गति, कर्म और स्थिरता।",
+        "gem6_name": "पुखराज (Yellow Sapphire)", "gem6_desc": "बृहस्पति की ऊर्जा, ज्ञान, समृद्धि, विवाह और धर्म का समर्थन।",
+        "gem7_name": "ओपल (Opal)", "gem7_desc": "रचनात्मक आकर्षण, संबंध सामंजस्य और विलासिता।",
+        "gem8_name": "टाइगर आई (Protection)", "gem8_desc": "एकाग्रता, आत्मविश्वास और व्यावहारिक ऊर्जा का समर्थन।",
+
+        // Journey
+        "journey_eyebrow": "ब्रह्मांडीय समयरेखा",
+        "journey_title": "प्रश्न से पवित्र समाधान तक की यात्रा।",
+        "j1_year": "दिन 01", "j1_title": "इरादा प्राप्त", "j1_desc": "जन्म विवरण, प्रश्न और जीवन संदर्भ व्हाट्सएप या फॉर्म के माध्यम से प्रवेश करते हैं।",
+        "j2_year": "दिन 02–04", "j2_title": "चार्ट विसर्जन", "j2_desc": "गहन कुंडली विश्लेषण: ग्रह, योग, दशा, दोष और समय की खिड़कियाँ मैप की जाती हैं।",
+        "j3_year": "दिन 05", "j3_title": "पवित्र नुस्खा", "j3_desc": "रत्न, रुद्राक्ष, यंत्र और मंत्र प्रोटोकॉल पहनने के निर्देशों के साथ।",
+        "j4_year": "निरंतर", "j4_title": "जीवंत मार्गदर्शन", "j4_desc": "मुहूर्त, सुधार और दशा संक्रमण के लिए अनुवर्ती सहायता।",
+
+        // About
+        "about_eyebrow": "हमारे बारे में",
         "about_title": "पारंपरिक पारिवारिक विरासत का संरक्षण",
-        "faq_title": "अक्सर पूछे जाने वाले प्रश्न",
-        "form_name": "पूरा नाम",
-        "form_phone": "मोबाइल नंबर",
-        "form_dob": "जन्म तिथि",
-        "form_time": "जन्म समय",
-        "form_place": "जन्म स्थान",
-        "form_ask": "प्रश्न / आवश्यकता",
-        "whatsapp_btn": "विवरण सहित WhatsApp खोलें"
+        "about_p1": "अस्त्र व्यास श्री जमनालाल व्यास ज्योतिर्विज्ञान केंद्र की विरासत को आगे बढ़ाते हैं।",
+        "about_list1": "वैदिक ज्योतिष परामर्श", "about_list2": "कुंडली और जन्म पत्रिका विश्लेषण",
+        "about_list3": "विवाह अनुकूलता मार्गदर्शन", "about_list4": "रत्न परामर्श",
+
+        // FAQ
+        "faq_eyebrow": "अक्सर पूछे जाने वाले प्रश्न",
+        "faq_title": "कक्ष में प्रवेश करने से पहले स्पष्टता।",
+        "faq1_q": "क्या मुझे कुंडली के लिए सही जन्म समय की आवश्यकता है?", "faq1_a": "हाँ, सटीक लग्न के लिए।",
+
+        // Contact
+        "contact_eyebrow": "सीधा परामर्श",
+        "form_name": "पूरा नाम", "form_name_ph": "आपका पूरा नाम",
+        "form_phone": "मोबाइल नंबर", "form_phone_ph": "+91...",
+        "form_dob": "जन्म तिथि", "form_time": "जन्म समय",
+        "form_place": "जन्म स्थान", "form_ask": "प्रश्न / आवश्यकता",
+        "form_q_ph": "अपना प्रश्न लिखें...",
+        "form_submit": "विवरण सहित WhatsApp खोलें"
     }
 };
-// 1. Language Toggle Logic
-function toggleLanguage() {
-    let currentLang = localStorage.getItem("astravyas-lang") || "en";
-    let newLang = currentLang === "en" ? "hi" : "en";
-    localStorage.setItem("astravyas-lang", newLang);
-    applyLanguage(newLang);
-}
 
-// 2. Jo tune manga wo function
+/* LOGIC - Don't change this */
 function applyLanguage(lang) {
     document.querySelectorAll("[data-i18n]").forEach(el => {
         const key = el.getAttribute("data-i18n");
         if (translations[lang] && translations[lang][key]) {
-            el.textContent = translations[lang][key];
+            if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+                el.placeholder = translations[lang][key];
+            } else {
+                el.textContent = translations[lang][key];
+            }
         }
     });
 
@@ -839,7 +882,13 @@ function applyLanguage(lang) {
     }
 }
 
-// 3. Page load hote hi language set ho jaye
+function toggleLanguage() {
+    let currentLang = localStorage.getItem("astravyas-lang") || "en";
+    let newLang = currentLang === "en" ? "hi" : "en";
+    localStorage.setItem("astravyas-lang", newLang);
+    applyLanguage(newLang);
+}
+
 window.addEventListener('DOMContentLoaded', () => {
     applyLanguage(localStorage.getItem("astravyas-lang") || "en");
 });
