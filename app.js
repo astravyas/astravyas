@@ -762,46 +762,58 @@ function initLoader() {
     initCursor();
   }, 3000);
 })();
-let currentLang =
-localStorage.getItem("astravyas-lang") || "en";
-
-function applyLanguage(lang){
-
-  const html = document.documentElement;
-
-  if(lang === "hi"){
-    html.classList.add("lang-hi");
-  }else{
-    html.classList.remove("lang-hi");
-  }
-
-  const btn =
-  document.getElementById("lang-switch");
-
-  if(btn){
-    btn.textContent =
-      lang === "hi"
-      ? "English"
-      : "हिंदी";
-  }
-
-  localStorage.setItem(
-    "astravyas-lang",
-    lang
-  );
-}
-
-document
-.getElementById("lang-switch")
-?.addEventListener("click",()=>{
-
-  currentLang =
-  currentLang === "en"
-  ? "hi"
-  : "en";
-
-  applyLanguage(currentLang);
-});
-
-applyLanguage(currentLang);
+const translations = {
+    "en": {
+        "hero_title": "Ancient Futuristic Cosmic Temple",
+        "hero_sub": "Premium astrology, gemstones & sacred remedies",
+        "btn_start": "Begin Consultation",
+        "nav_home": "Temple",
+        "nav_gem": "Gemstones",
+        "nav_rudra": "Rudraksha",
+        "nav_ast": "Astrology",
+        "nav_con": "Contact",
+        "stats_years": "Years of practice",
+        "stats_consult": "Sacred consultations",
+        "stats_navratna": "Navratna pathways",
+        "services_title": "Astrology Services",
+        "services_desc": "Every path of destiny, separated with sacred clarity.",
+        "gem_title": "Sacred Gemstone Collection",
+        "rudra_title": "Premium Rudraksha Showcase",
+        "luxury_title": "Luxury Sacred Objects",
+        "about_title": "Continuing a Traditional Family Heritage",
+        "form_name": "Full Name",
+        "form_phone": "Phone Number",
+        "form_dob": "Birth Date",
+        "form_time": "Birth Time",
+        "form_place": "Birth Place",
+        "form_ask": "Question / Requirement",
+        "whatsapp_btn": "Open WhatsApp With Details"
+    },
+    "hi": {
+        "hero_title": "दिव्य वैदिक ज्योतिष केंद्र",
+        "hero_sub": "वैदिक ज्योतिष, Gemstone परामर्श एवं पारंपरिक आध्यात्मिक उपाय",
+        "btn_start": "परामर्श प्रारम्भ करें",
+        "nav_home": "मुख्य पृष्ठ",
+        "nav_gem": "Gemstones",
+        "nav_rudra": "Rudraksha",
+        "nav_ast": "ज्योतिष",
+        "nav_con": "संपर्क",
+        "stats_years": "वर्षों का अनुभव",
+        "stats_consult": "सफल परामर्श",
+        "stats_navratna": "Navratna मार्ग",
+        "services_title": "ज्योतिष सेवाएँ",
+        "services_desc": "जीवन के प्रत्येक मार्ग को दिव्य स्पष्टता के साथ समझें।",
+        "gem_title": "पवित्र Gemstone संग्रह",
+        "rudra_title": "विशेष Rudraksha संग्रह",
+        "luxury_title": "पवित्र आध्यात्मिक साधन",
+        "about_title": "पारंपरिक पारिवारिक विरासत का संरक्षण",
+        "form_name": "पूरा नाम",
+        "form_phone": "मोबाइल नंबर",
+        "form_dob": "जन्म तिथि",
+        "form_time": "जन्म समय",
+        "form_place": "जन्म स्थान",
+        "form_ask": "प्रश्न / आवश्यकता",
+        "whatsapp_btn": "विवरण सहित WhatsApp खोलें"
+    }
+};
 
