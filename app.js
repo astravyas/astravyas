@@ -843,3 +843,8 @@ function applyLanguage(lang) {
 window.addEventListener('DOMContentLoaded', () => {
     applyLanguage(localStorage.getItem("astravyas-lang") || "en");
 });
+// Page load hote hi ye check karega ki pehle kya language set thi
+window.addEventListener('DOMContentLoaded', () => {
+    const savedLang = localStorage.getItem("astravyas-lang") || "en";
+    applyLanguage(savedLang);
+});
